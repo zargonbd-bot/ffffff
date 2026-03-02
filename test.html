@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zargon | Ultra Premium v11.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { 
+            --primary: #6366f1; --primary-hover: #4f46e5;
+            --bg: #f8fafc; --card: #ffffff; --text: #0f172a; 
+            --border: #e2e8f0; --success: #10b981; --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+        .dark-mode { 
+            --bg: #020617; --card: #0f172a; --text: #f8fafc; 
+            --border: #1e293b; --glass: rgba(15, 23, 42, 0.8);
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); color: var(--text); 
+            margin: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent);
+        }
+
+        /* Header & Nav */
+        header { 
+            background: var(--glass); backdrop-filter: blur(12px);
+            padding: 12px 25px; border-bottom: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; display: flex; align-items: center; gap: 8px; }
+        .logo i { color: var(--primary); font-size: 24px; }
+
+        .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { 
+            background: var(--card); padding: 15px; border-radius: 20px; 
+            border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            text-align: center; transition: 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .stat-val { display: block; font-size: 20px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+
+        /* Premium Input Box */
+        .magic-wrapper { 
+            background: var(--card); padding: 25px; border-radius: 24px; 
+            border: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            margin-bottom: 30px; position: relative; overflow: hidden;
+        }
+        .magic-wrapper::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
+        
+        #magic-box { 
+            width: 100%; padding: 16px; border-radius: 16px; border: 2px solid var(--border);
+            background: var(--bg); color: var(--text); font-size: 16px; outline: none;
+            transition: 0.3s; box-sizing: border-box; font-weight: 600;
+        }
+        #magic-box:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
+
+        .glass-form { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 15px; margin-top: 20px;
+        }
+        .input-group label { font-size: 10px; font-weight: 700; color: #64748b; margin-bottom: 6px; display: block; }
+        .glass-form input { 
+            background: var(--bg); border: 1px solid var(--border); padding: 12px; 
+            border-radius: 12px; color: var(--text); font-weight: 600; outline: none;
+        }
+
+        /* Search & Actions */
+        .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; }
+        .search-box { position: relative; flex: 1; }
+        .search-box input { 
+            width: 100%; padding: 12px 12px 12px 40px; border-radius: 14px; 
+            border: 1px solid var(--border); background: var(--card); outline: none; box-sizing: border-box;
+        }
+        .search-box i { position: absolute; left: 15px; top: 15px; color: #94a3b8; }
+
+        /* Premium Table */
+        .table-card { 
+            background: var(--card); border-radius: 24px; border: 1px solid var(--border); 
+            overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(99, 102, 241, 0.05); padding: 18px 15px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; text-align: center; color: var(--primary); }
+        td { padding: 15px; text-align: center; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 500; }
+        tr:hover { background: rgba(99, 102, 241, 0.02); }
+
+        /* Pill Styles */
+        .pill { 
+            padding: 6px 12px; border-radius: 10px; font-size: 10px; font-weight: 800; 
+            cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .pill-done { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .pill-pending { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .pill:active { transform: scale(0.9); }
+
+        /* Buttons */
+        .btn { 
+            padding: 12px 20px; border-radius: 14px; border: none; font-weight: 700; 
+            cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4); }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        /* Loader */
+        #loader { 
+            display:none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+            background: var(--text); color: var(--card); padding: 10px 25px; border-radius: 30px; 
+            z-index: 2000; font-weight: 700; font-size: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Login Screen Premium */
+        #login-screen { 
+            height: 100vh; display: flex; align-items: center; justify-content: center; 
+            background: #020617; position: fixed; inset: 0; z-index: 5000;
+        }
+        .login-box { 
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.1);
+            width: 320px; text-align: center;
+        }
+        .login-box input { 
+            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 14px; 
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); 
+            color: white; outline: none; box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+            .stat-val { font-size: 16px; }
+            header { padding: 10px 15px; }
+            .btn span { display: none; }
+            .btn { padding: 10px; }
+        }
+    </style>
+</head>
+<body onload="checkSession()">
+
+    <div id="loader"><i class="fas fa-circle-notch fa-spin"></i> UPDATING CLOUD...</div>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <div class="logo" style="justify-content:center; color:white; margin-bottom:30px">
+                <i class="fas fa-shield-halved"></i> ZARGON <span>Editing Part Management</span>
+            </div>
+            <input type="text" id="user" placeholder="Username">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn btn-primary" onclick="login()" style="width:100%; justify-content:center">AUTHENTICATE</button>
+        </div>
+    </div>
+
+    <div id="dashboard" style="display:none">
+        <header>
+            <div class="logo"><i class="fas fa-bolt"></i> ZARGON  (Editing Part)</div>
+            <div style="display:flex; gap:10px">
+                <button class="btn btn-ghost" onclick="toggleDark()"><i class="fas fa-moon"></i></button>
+                <button class="btn btn-ghost" onclick="openTrash()"><i class="fas fa-trash-can"></i></button>
+                <button class="btn btn-primary" onclick="loadFromSheet()"><i class="fas fa-rotate"></i></button>
+                <button class="btn btn-danger" onclick="logout()"><i class="fas fa-power-off"></i></button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-val" id="total-rows">0</span>
+                    <span class="stat-label">Total items</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" id="done-rows" style="color:var(--success)">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" id="pending-rows" style="color:var(--danger)">0</span>
+                    <span class="stat-label">In Progress</span>
+                </div>
+            </div>
+
+            <div class="magic-wrapper">
+                <input type="text" id="magic-box" placeholder="Magic Input (Ex: P10 204 5 8 High Priority Note)" onkeyup="smartParse(this.value)">
+                <div class="glass-form">
+                    <div class="input-group"><label>Entry Date</label><input type="text" id="f-date" readonly></div>
+                    <div class="input-group"><label>Cycle ID</label><input type="text" id="f-cycle" placeholder="..."></div>
+                    <div class="input-group"><label>Product Code</label><input type="number" id="f-code" placeholder="000"></div>
+                    <div class="input-group"><label>Raw Clips</label><input type="number" id="f-raw" placeholder="0"></div>
+                    <div class="input-group"><label>Edited</label><input type="number" id="f-edited" placeholder="0"></div>
+                    <div class="input-group"><label>Custom Note</label><input type="text" id="f-note" placeholder="Write here..."></div>
+                </div>
+                <div style="margin-top:20px; display:flex; gap:10px">
+                    <button class="btn btn-primary" style="flex:2; justify-content:center" onclick="save()">
+                        <i class="fas fa-cloud-arrow-up"></i> SAVE DATA
+                    </button>
+                    <button class="btn btn-ghost" style="flex:1; justify-content:center" onclick="clearForm()">CLEAR</button>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-db" placeholder="Search by Code, Cycle or Note..." onkeyup="filterTable()">
+                </div>
+                <button class="btn btn-danger" onclick="bulkDelete()"><i class="fas fa-trash-alt"></i> <span>Delete</span></button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" onclick="toggleAll(this)"></th>
+                                <th>Date</th><th>Cycle</th><th>Code</th><th>Raw</th><th>Edit</th>
+                                <th>Photo</th><th>Video</th><th>Ads</th><th>Note</th><th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="main-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="trash-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(10px); z-index:2001; align-items:center; justify-content:center; padding:20px;">
+        <div class="table-card" style="width:100%; max-width:800px; max-height:80vh; overflow-y:auto; padding:20px; position:relative">
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:24px" onclick="closeTrash()">&times;</span>
+            <h2 style="margin-bottom:20px">Trash Repository</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>Code</th><th>Date</th><th>Note</th><th>Action</th></tr></thead>
+                    <tbody id="trash-list-body"></tbody>
+                </table>
+            </div>
+            <button class="btn btn-danger" style="width:100%; margin-top:20px; justify-content:center" onclick="clearTrash()">PURGE TRASH BIN</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykbRGHovLkbdbKrfxi_UT-qiCVsj1EQevQPVKwW0KtoPPcyd8tJvU60hn9AvYaoNfDJQ/exec";
+        let db = [];
+        let trash = JSON.parse(localStorage.getItem('zargon_trash_bin')) || [];
+
+        function setTodayDate() {
+            let t = new Date();
+            document.getElementById('f-date').value = `${String(t.getDate()).padStart(2,'0')}/${String(t.getMonth()+1).padStart(2,'0')}/${t.getFullYear()}`;
+        }
+
+        function smartParse(val) {
+            if(!val.trim()) return; setTodayDate();
+            let p = val.trim().split(/\s+/);
+            if(p.length >= 1) document.getElementById('f-cycle').value = p[0];
+            if(p.length >= 2) document.getElementById('f-code').value = p[1];
+            if(p.length >= 3) document.getElementById('f-raw').value = p[2];
+            if(p.length >= 4) document.getElementById('f-edited').value = p[3];
+            if(p.length >= 5) document.getElementById('f-note').value = p.slice(4).join(" ");
+        }
+
+        async function save() {
+            let code = document.getElementById('f-code').value;
+            if(!code) return alert("Product Code is required!");
+            toggleLoader(true);
+            let existing = db.find(x => x.code.toString() === code.toString());
+            let data = {
+                date: document.getElementById('f-date').value,
+                cycle: document.getElementById('f-cycle').value || "N/A",
+                code: code, raw: document.getElementById('f-raw').value || 0,
+                edited: document.getElementById('f-edited').value || 0,
+                note: document.getElementById('f-note').value || "",
+                pStat: existing ? existing.pStat : 'Pending',
+                eStat: existing ? existing.eStat : 'Pending',
+                aStat: existing ? existing.aStat : 'Pending',
+                action: "save"
+            };
+            try { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) }); await loadFromSheet(); clearForm(); } catch(e) { alert("Cloud Error!"); }
+            toggleLoader(false);
+        }
+
+        async function loadFromSheet() {
+            toggleLoader(true);
+            try {
+                let r = await fetch(SCRIPT_URL);
+                let rawData = await r.json();
+                db = rawData.map(row => ({
+                    date: row[0], cycle: row[1], code: row[2], raw: row[3], edited: row[4], 
+                    note: row[5], pStat: row[6], eStat: row[7], aStat: row[8]
+                }));
+                db.sort((a, b) => parseInt(a.code) - parseInt(b.code));
+                render();
+                updateStats();
+            } catch(e) {}
+            toggleLoader(false); setTodayDate();
+        }
+
+        function render(data = db) {
+            let h = "";
+            data.forEach((item, i) => {
+                h += `<tr>
+                    <td><input type="checkbox" class="row-select" data-code="${item.code}"></td>
+                    <td style="color:#64748b; font-size:12px">${item.date}</td>
+                    <td><span style="background:rgba(99,102,241,0.1); padding:4px 8px; border-radius:6px; color:var(--primary)">${item.cycle}</span></td>
+                    <td style="font-weight:800; font-size:15px">#${item.code}</td>
+                    <td>${item.raw}</td><td>${item.edited}</td>
+                    <td><span class="pill ${item.pStat==='Done'?'pill-done':'pill-pending'}" onclick="toggleStatus(${i},'pStat')"><i class="fas ${item.pStat==='Done'?'fa-circle-check':'fa-clock'}"></i> ${item.pStat}</span></td>
+                    <td><span class="pill ${item.eStat==='Done'?'pill-done':'pill-pending'}" onclick="toggleStatus(${i},'eStat')"><i class="fas ${item.eStat==='Done'?'fa-circle-check':'fa-clock'}"></i> ${item.eStat}</span></td>
+                    <td><span class="pill ${item.aStat==='Done'?'pill-done':'pill-pending'}" onclick="toggleStatus(${i},'aStat')"><i class="fas ${item.aStat==='Done'?'fa-circle-check':'fa-clock'}"></i> ${item.aStat}</span></td>
+                    <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; color:#64748b">${item.note}</td>
+                    <td><button class="btn btn-ghost" style="padding:5px 10px" onclick="editRow(${i})"><i class="fas fa-pen-to-square"></i></button></td>
+                </tr>`;
+            });
+            document.getElementById('main-table').innerHTML = h;
+        }
+
+        function updateStats() {
+            document.getElementById('total-rows').innerText = db.length;
+            let done = db.filter(x => x.pStat==='Done' && x.eStat==='Done' && x.aStat==='Done').length;
+            document.getElementById('done-rows').innerText = done;
+            document.getElementById('pending-rows').innerText = db.length - done;
+        }
+
+        function filterTable() {
+            let q = document.getElementById('search-db').value.toLowerCase();
+            let res = db.filter(x => x.code.toString().includes(q) || x.note.toLowerCase().includes(q) || x.cycle.toLowerCase().includes(q));
+            render(res);
+        }
+
+        async function toggleStatus(i, f) {
+            db[i][f] = db[i][f] === 'Pending' ? 'Done' : 'Pending';
+            toggleLoader(true);
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({...db[i], action: "save"}) });
+            render(); updateStats(); toggleLoader(false);
+        }
+
+        function editRow(i) {
+            let itm = db[i];
+            document.getElementById('f-cycle').value = itm.cycle;
+            document.getElementById('f-code').value = itm.code;
+            document.getElementById('f-raw').value = itm.raw;
+            document.getElementById('f-edited').value = itm.edited;
+            document.getElementById('f-note').value = itm.note;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        async function bulkDelete() {
+            let sel = Array.from(document.querySelectorAll('.row-select:checked')).map(cb => cb.getAttribute('data-code'));
+            if(sel.length === 0) return alert("Select items!");
+            if(!confirm("Move selected to trash?")) return;
+            toggleLoader(true);
+            for(let code of sel) {
+                let itm = db.find(x => x.code.toString() === code.toString());
+                if(itm) { trash.push(itm); await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({code: code, action: "delete"}) }); }
+            }
+            localStorage.setItem('zargon_trash_bin', JSON.stringify(trash));
+            await loadFromSheet(); toggleLoader(false);
+        }
+
+        function openTrash() { document.getElementById('trash-modal').style.display='flex'; renderTrash(); }
+        function closeTrash() { document.getElementById('trash-modal').style.display='none'; }
+        function renderTrash() {
+            let h = "";
+            trash.forEach((item, i) => {
+                h += `<tr><td>#${item.code}</td><td>${item.date}</td><td>${item.note}</td>
+                <td><button onclick="restore(${i})" class="btn btn-primary" style="padding:5px 10px">Restore</button></td></tr>`;
+            });
+            document.getElementById('trash-list-body').innerHTML = h || "<tr><td colspan='4'>Trash is empty</td></tr>";
+        }
+        async function restore(i) {
+            toggleLoader(true);
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({...trash[i], action: "save"}) });
+            trash.splice(i, 1); localStorage.setItem('zargon_trash_bin', JSON.stringify(trash));
+            await loadFromSheet(); closeTrash();
+        }
+
+        function toggleDark() { 
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('z_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+        if(localStorage.getItem('z_theme') === 'dark') document.body.classList.add('dark-mode');
+
+        function login() { if(document.getElementById('user').value==="admin" && document.getElementById('pass').value==="admin123") { localStorage.setItem('z_login','true'); showDashboard(); } else alert("Access Denied"); }
+        function checkSession() { if(localStorage.getItem('z_login')==='true') showDashboard(); }
+        function showDashboard() { document.getElementById('login-screen').style.display='none'; document.getElementById('dashboard').style.display='block'; loadFromSheet(); }
+        function logout() { localStorage.setItem('z_login','false'); location.reload(); }
+        function toggleLoader(s) { document.getElementById('loader').style.display = s?'block':'none'; }
+        function toggleAll(src) { document.querySelectorAll('.row-select').forEach(cb => cb.checked = src.checked); }
+        function clearForm() { document.getElementById('magic-box').value=""; document.getElementById('f-cycle').value=""; document.getElementById('f-code').value=""; document.getElementById('f-raw').value=""; document.getElementById('f-edited').value=""; document.getElementById('f-note').value=""; setTodayDate(); }
+        function clearTrash() { if(confirm("Purge all data?")) { trash=[]; localStorage.setItem('zargon_trash_bin', JSON.stringify(trash)); renderTrash(); } }
+    </script>
+</body>
+</html>
